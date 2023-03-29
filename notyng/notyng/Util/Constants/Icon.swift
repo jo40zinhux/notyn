@@ -12,4 +12,5 @@ struct Icons {
     static let addOrder = UIImage(named: "ic_add")
     static let addProduct = UIImage(named: "ic_add_product")
     static let removeProduct = UIImage(named: "ic_minus_product")
+    static let close = UIImage(named: "ic_close")
 }

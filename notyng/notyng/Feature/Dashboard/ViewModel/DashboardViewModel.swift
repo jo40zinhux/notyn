@@ -15,21 +15,23 @@ public final class DashboardViewModel {
     private var fullOrdersList: [Order] = []
     
     public func fetchData() {
-        fullOrdersList = DataManager.shared.getOrders(isOpen: true)
-        orders = fullOrdersList
-        
-        if orders.count > 0 {
-            delegate?.fetchOrdersListData()
-            getTotalValue()
-        } else {
-            delegate?.fetchOrdersListFailData()
-            delegate?.fetchTotalValueFailData()
-        }
+        DataManager.shared.getOrders(isOpen: true, completion: { allOrders in
+            self.fullOrdersList = allOrders
+            self.orders = self.fullOrdersList
+            
+            if self.orders.count > 0 {
+                self.delegate?.fetchOrdersListData()
+                self.getTotalValue()
+            } else {
+                self.delegate?.fetchOrdersListFailData()
+                self.delegate?.fetchTotalValueFailData()
+            }
+        })
     }
     
     public func filterOrderByName(name: String) {
         orders = fullOrdersList
-        orders = orders.filter({ $0.name?.contains(name) ?? false })
+        orders = orders.filter({ $0.name.contains(name) })
         delegate?.fetchOrdersListData()
     }
     
@@ -43,7 +45,7 @@ public final class DashboardViewModel {
     
     public func getUniqueProducts(order: Order) -> [Product] {
         var uniqueProduct: [Product] = []
-        if let products = order.products?.allObjects as? [Product] {
+        if let products = order.products {
             for product in products {
                 if !uniqueProduct.contains(where: {$0.productId == product.productId }) {
                     uniqueProduct.append(product)
@@ -59,18 +61,20 @@ public final class DashboardViewModel {
     }
     
     private func getTotalValue() {
-        var totalValue: Int16 = 0
+        var totalValue: Int = 0
         if orders.count > 0 {
             for order in orders {
-                if let products = order.products?.allObjects as? [Product], products.count > 0 {
-                    for product in products {
-                        totalValue = totalValue + product.price
+                if let products = order.products {
+                    if products.count > 0 {
+                        for product in products {
+                            totalValue = totalValue + product.price
+                        }
+                    } else {
+                        totalValue += 0
                     }
-                } else {
-                    totalValue += 0
                 }
+                delegate?.fetchTotalValueData(totalValue: totalValue.toPriceString())
             }
-            delegate?.fetchTotalValueData(totalValue: totalValue.toPriceString())
         } else {
             delegate?.fetchTotalValueFailData()
         }

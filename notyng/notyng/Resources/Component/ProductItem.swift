@@ -10,7 +10,7 @@ import UIKit
 
 public final class ProductItem: UIView {
     
-    // MARK: - Variables
+    // MARK: - Properties
     private var productTitleLabel: UILabel = {
         let label = UILabel()
         

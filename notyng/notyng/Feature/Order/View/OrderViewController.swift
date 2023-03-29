@@ -10,15 +10,14 @@ import Hero
 
 class OrderViewController: UIViewController {
     
-    // MARK: - Variables
+    // MARK: - Properties
     private var closeButton: UIButton = {
         let button = UIButton()
         
         button.translatesAutoresizingMaskIntoConstraints = false
         button.isUserInteractionEnabled = true
-        button.setTitle("Close", for: .normal)
-        button.tintColor = .blue
-        button.backgroundColor = .red
+        button.tintColor = .white
+        button.setBackgroundImage(Icons.close, for: .normal)
         
         return button
     }()
@@ -43,7 +42,7 @@ class OrderViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = Fonts.titleBold24
         label.textAlignment = .right
-        label.text = "R$ 999"
+        label.text = "R$ ?"
         label.numberOfLines = 0
         label.textColor = Colors.backgroundPrimaryColor
         label.heroID = HeroIds.totalPrice
@@ -101,6 +100,8 @@ class OrderViewController: UIViewController {
         return tableView
     }()
     
+    private var footerView: AddProductFooterView?
+    
     private lazy var viewModel: OrderViewModel = {
         let vm = OrderViewModel()
         
@@ -134,13 +135,22 @@ class OrderViewController: UIViewController {
         viewBackground.addSubview(textFieldView)
         viewBackground.addSubview(productsTableView)
         
-        productsTableView.register(ProductTableViewCell.self, forCellReuseIdentifier: ProductTableViewCell.identifier)
+        productsTableView.register(ProductTableViewCell.self,
+                                   forCellReuseIdentifier: ProductTableViewCell.identifier)
+        footerView = AddProductFooterView(backgroundColor: .red,
+                                          iconImage: Icons.addProduct,
+                                          cornerRadius: 12,
+                                          frame: CGRect(x: 0,
+                                                        y: 0,
+                                                        width: productsTableView.frame.size.width,
+                                                        height: ValueConst.x64))
+        productsTableView.tableFooterView = footerView
     }
     
     private func setupLayoutConstraints() {
         NSLayoutConstraint.activate([
             closeButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: ValueConst.x8),
-            closeButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: ValueConst.x8),
+            closeButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: ValueConst.x16),
             closeButton.heightAnchor.constraint(equalToConstant: ValueConst.x24),
             closeButton.widthAnchor.constraint(equalToConstant: ValueConst.x24),
             
@@ -177,11 +187,30 @@ class OrderViewController: UIViewController {
     // MARK: - Action Setups
     private func setupActions() {
         closeButton.addTarget(self, action: #selector(dismissView), for: .touchUpInside)
+        footerView?.interactionButton.addTarget(self, action: #selector(openAllProducts), for: .touchUpInside)
     }
     
     @objc
     private func dismissView() {
-        self.dismiss(animated: true)
+        if let nameText = nameTextField.text, nameText != "" {
+            viewModel.saveNewOrder(name: nameText)
+        } else {
+            self.dismiss(animated: true)
+            presentingViewController?.viewWillAppear(true)
+        }
+    }
+    
+    @objc
+    private func openAllProducts() {
+        let listProductsVC = ListProductViewController()
+        listProductsVC.modalPresentationStyle = .pageSheet
+        if let sheet = listProductsVC.sheetPresentationController {
+            sheet.detents = [.medium(), .large()]
+            sheet.preferredCornerRadius = ValueConst.x24
+        }
+        
+        listProductsVC.delegate = self
+        present(listProductsVC, animated: true, completion: nil)
     }
 }
 
@@ -204,6 +233,15 @@ extension OrderViewController: OrderProtocol {
     func fetchOrderFailData() {
         productsTableView.reloadData()
     }
+    
+    func fetchSaveOrderData() {
+        self.dismiss(animated: true)
+        presentingViewController?.viewWillAppear(true)
+    }
+    
+    func fetchSaveOrderFailtData() {
+        print("fail to save")
+    }
 }
 
 extension OrderViewController: UITableViewDelegate, UITableViewDataSource {
@@ -216,6 +254,7 @@ extension OrderViewController: UITableViewDelegate, UITableViewDataSource {
                                                        for: indexPath) as? ProductTableViewCell else {return UITableViewCell()}
         
         let product = viewModel.distinctProducts[indexPath.row]
+        cell.delegate = self
         cell.setupCell(product: product,
                        productCount: viewModel.getCountProducts(product: product))
         
@@ -227,9 +266,27 @@ extension OrderViewController: UITableViewDelegate, UITableViewDataSource {
     }
 }
 
+extension OrderViewController: ProductCellProtocol {
+    func removeSelectedProduct(product: Product) {
+        viewModel.removeProductToOrder(product: product)
+    }
+    
+    func addSelectedProduct(product: Product) {
+        viewModel.addProductToOrder(product: product)
+    }
+}
+
+extension OrderViewController: ProductProtocol {
+    func selectedProduct(product: Product) {
+        viewModel.addProductToOrder(product: product)
+    }
+}
+
 extension OrderViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
+        textField.isEnabled = false
+        viewModel.createOrder(name: textField.text ?? "")
         return true
     }
 }

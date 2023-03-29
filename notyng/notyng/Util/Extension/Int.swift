@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension Int16 {
+extension Int {
     func toPriceString() -> String {
         return "R$ \(self)"
     }

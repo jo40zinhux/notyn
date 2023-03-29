@@ -10,7 +10,7 @@ import UIKit
 
 public final class FloatingButton: UIView {
     
-    // MARK: - Variables
+    // MARK: - Properties
     private var viewBackgroundColor: UIColor
     private var iconImage: UIImage?
     private var viewCornerRadius: CGFloat = 12

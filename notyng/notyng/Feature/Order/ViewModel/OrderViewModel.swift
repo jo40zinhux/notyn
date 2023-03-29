@@ -14,11 +14,20 @@ public final class OrderViewModel {
     private var products: [Product] = []
     public var distinctProducts: [Product] = []
     
+    public func createOrder(name: String) {
+        order = Order(name: name,
+                      orderId: UUID().uuidString,
+                      totalValue: 0,
+                      orderDateCreate: Date().formattedDate(format: "dd/MM/yyyy HH:mm"),
+                      orderDateFinish: "",
+                      isOpen: true,
+                      paymentType: 0)
+        order?.products = []
+    }
+    
     public func fetchData() {
-        order = DataManager.shared.getSelectedOrder()
-        
         if let o = order {
-            if let p = o.products?.allObjects as? [Product] {
+            if let p = o.products, p.count > 0 {
                 products = p
                 distinctProducts = removeDuplicatedProduct()
                 distinctProducts = distinctProducts.sorted(by: {$0.price < $1.price})
@@ -33,9 +42,41 @@ public final class OrderViewModel {
         }
     }
     
+    public func addProductToOrder(product: Product) {
+        if var products = order?.products {
+            products.append(product)
+            order?.products = products
+            fetchData()
+        }
+    }
+    
+    public func removeProductToOrder(product: Product) {
+        if var products = order?.products {
+            if let index = products.firstIndex(of: product) {
+                products.remove(at: index)
+                order?.products = products
+                fetchData()
+            }
+        }
+    }
+    
     public func getCountProducts(product: Product) -> Int {
         let filteredProducts = products.filter({$0.productId == product.productId})
         return filteredProducts.count
+    }
+    
+    public func saveNewOrder(name: String) {
+        if let products = order?.products {
+            DataManager.shared.saveOrder(name: name,
+                                         products: products,
+                                         totalValue: self.getTotalValue()) { result in
+                if result {
+                    self.delegate?.fetchSaveOrderData()
+                } else {
+                    self.delegate?.fetchSaveOrderFailtData()
+                }
+            }
+        }
     }
     
     private func removeDuplicatedProduct() -> [Product] {
@@ -49,12 +90,22 @@ public final class OrderViewModel {
     }
     
     private func setupTotalValue() -> String {
-        var totalValue: Int16 = 0
-
+        var totalValue: Int = 0
+        
         for product in products {
             totalValue = totalValue + product.price
         }
-
+        
         return "\(totalValue.toPriceString())"
+    }
+    
+    private func getTotalValue() -> Int {
+        var totalValue: Int = 0
+        
+        for product in products {
+            totalValue = totalValue + product.price
+        }
+        
+        return totalValue
     }
 }

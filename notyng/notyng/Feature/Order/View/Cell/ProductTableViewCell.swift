@@ -9,9 +9,11 @@ import UIKit
 
 class ProductTableViewCell: UITableViewCell {
     
-    // MARK: - Variables
-    static let identifier = "orderIdentifier"
+    // MARK: - Properties
+    static let identifier = "productIdentifier"
     private var productItem = ProductItem(productName: "", productIcon: .soda, productPrice: "")
+    private var mProduct: Product?
+    public var delegate: ProductCellProtocol?
     
     private var viewBackground: UIView = {
         let view = UIView()
@@ -90,7 +92,7 @@ class ProductTableViewCell: UITableViewCell {
         return button
     }()
     
-    var productCount = 1 {
+    var productCount = 0 {
         didSet {
             counterLabel.text = "\(productCount)"
         }
@@ -177,10 +179,11 @@ class ProductTableViewCell: UITableViewCell {
     }
     
     public func setupCell(product: Product, productCount: Int) {
+        mProduct = product
         productItem.typeIcon = ProductType(rawValue: product.productType) ?? .soda
         productItem.price = product.price.toPriceString()
         productItem.name = product.name ?? ""
-        counterLabel.text = "\(productCount)"
+        self.productCount = productCount
     }
     
     // MARK: - Action Setups
@@ -192,12 +195,23 @@ class ProductTableViewCell: UITableViewCell {
     @objc
     private func addCounterProduct() {
         productCount += 1
+        if let product = mProduct {
+            delegate?.addSelectedProduct(product: product)
+        }
     }
     
     @objc
     private func removeCounterProduct() {
         if productCount > 0 {
             productCount -= 1
+            if let product = mProduct {
+                delegate?.removeSelectedProduct(product: product)
+            }
         }
     }
+}
+
+protocol ProductCellProtocol {
+    func removeSelectedProduct(product: Product)
+    func addSelectedProduct(product: Product)
 }

@@ -11,7 +11,7 @@ import Hero
 
 class DashboardViewController: UIViewController {
     
-    // MARK: - Variables
+    // MARK: - Properties
     private var titleLabel: UILabel = {
         let label = UILabel()
         
@@ -32,7 +32,7 @@ class DashboardViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = Fonts.titleBold24
         label.textAlignment = .right
-        label.text = "R$ 999"
+        label.text = "R$ ?"
         label.numberOfLines = 0
         label.textColor = Colors.backgroundPrimaryColor
         label.heroID = HeroIds.totalPrice
@@ -91,11 +91,13 @@ class DashboardViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         hero.isEnabled = true
-        viewModel.fetchData()
         
         setupLayout()
         setupLayoutConstraints()
         setupAction()
+        
+        dashboardAnimationView.play()
+        viewModel.fetchData()
     }
     
     // MARK: - Layout Setups
@@ -155,26 +157,11 @@ class DashboardViewController: UIViewController {
     
     @objc
     private func addOrder() {
-        let o = DataManager.shared.createOrder(name: "aaa")
-        let p1 = DataManager.shared.createProduct(name:"original" ,price: 13, productType: .beer, productId: 1)
-        let p2 = DataManager.shared.createProduct(name:"original" ,price: 13, productType: .beer, productId: 1)
-        let p3 = DataManager.shared.createProduct(name:"lays" ,price: 20, productType: .snack, productId: 2)
-        let p4 = DataManager.shared.createProduct(name:"agua sem gas" ,price: 4, productType: .water, productId: 3)
-        let p5 = DataManager.shared.createProduct(name:"agua sem gas" ,price: 4, productType: .water, productId: 3)
-        let p6 = DataManager.shared.createProduct(name:"agua sem gas" ,price: 4, productType: .water, productId: 3)
-        let p7 = DataManager.shared.createProduct(name:"bud" ,price: 14, productType: .beer, productId: 4)
+        let orderVC = OrderViewController()
+        orderVC.hero.isEnabled = true
+        orderVC.modalPresentationStyle = .overFullScreen
         
-        o.addToProducts(p1)
-        o.addToProducts(p2)
-        o.addToProducts(p3)
-        o.addToProducts(p4)
-        o.addToProducts(p5)
-        o.addToProducts(p6)
-        o.addToProducts(p7)
-        
-        DataManager.shared.saveContext()
-        dashboardAnimationView.play()
-        viewModel.fetchData()
+        self.present(orderVC, animated: true)
     }
 }
 
@@ -207,10 +194,10 @@ extension DashboardViewController: UITableViewDelegate, UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: OrderTableViewCell.identifier,
                                                        for: indexPath) as? OrderTableViewCell else {return UITableViewCell()}
         let order = viewModel.orders[indexPath.row]
-        let products = order.products?.allObjects as? [Product]
-        cell.setupCell(name: order.name ?? "",
-                       date: order.orderDateCreate ?? Date(),
-                       products: products ?? [])
+        let products = order.products ?? []
+        cell.setupCell(name: order.name,
+                       date: order.orderDateCreate.toDate(),
+                       products: products)
         
         return cell
     }

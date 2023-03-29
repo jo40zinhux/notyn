@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-enum ProductType : Int16 {
+enum ProductType : Int {
     case beer
     case snack
     case water
@@ -17,7 +17,7 @@ enum ProductType : Int16 {
     case energyDrink
     case isotonic
     case lollipop
-    
+    case cleaning
 }
 
 struct ProductIcon {
@@ -29,6 +29,7 @@ struct ProductIcon {
     static let energyDrink = "ic_energy_drink"
     static let isotonic = "ic_isotonic"
     static let lollipop = "ic_lollipop"
+    static let cleaning = "ic_cleaning"
     
     public static func getIconNameForType(productType: ProductType) -> String? {
         switch productType {
@@ -49,6 +50,8 @@ struct ProductIcon {
             return ProductIcon.isotonic
         case .lollipop:
             return ProductIcon.lollipop
+        case .cleaning:
+            return ProductIcon.cleaning
         }
     }
 }

@@ -9,7 +9,7 @@ import UIKit
 
 class OrderTableViewCell: UITableViewCell {
     
-    // MARK: - Variables
+    // MARK: - Properties
     static let identifier = "orderIdentifier"
     
     private var viewBackground: UIView = {
@@ -67,7 +67,7 @@ class OrderTableViewCell: UITableViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = Fonts.titleBold12
         label.textAlignment = .right
-        label.text = "Total R$ 999"
+        label.text = "Total R$ ?"
         label.numberOfLines = 0
         label.textColor = Colors.backgroundTertiaryColor
         
@@ -150,7 +150,7 @@ class OrderTableViewCell: UITableViewCell {
         for product in p {
             let countSameProducts = products.filter({$0.productId == product.productId}).count
             
-            let productName = ProductItem(productName: product.name ?? "",
+            let productName = ProductItem(productName: product.name,
                                           productIcon: ProductType(rawValue: product.productType) ?? .water,
                                           productPrice: "\(countSameProducts)x \(product.price.toPriceString())")
             productName.translatesAutoresizingMaskIntoConstraints = false
@@ -171,7 +171,7 @@ class OrderTableViewCell: UITableViewCell {
     }
     
     private func setupTotalValue(products: [Product]) -> String {
-        var totalValue: Int16 = 0
+        var totalValue: Int = 0
         
         for product in products {
             totalValue = totalValue + product.price
