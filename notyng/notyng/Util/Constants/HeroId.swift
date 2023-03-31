@@ -11,4 +11,5 @@ struct HeroIds {
     static let title = "title"
     static let totalPrice = "total_price"
     static let background = "background"
+    static let floatingButton = "floatingButton"
 }

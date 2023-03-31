@@ -66,10 +66,8 @@ public final class OrderViewModel {
     }
     
     public func saveNewOrder(name: String) {
-        if let products = order?.products {
-            DataManager.shared.saveOrder(name: name,
-                                         products: products,
-                                         totalValue: self.getTotalValue()) { result in
+        if let order = order {
+            DataManager.shared.saveOrder(order: order) { result in
                 if result {
                     self.delegate?.fetchSaveOrderData()
                 } else {

@@ -15,25 +15,29 @@ class DataManager {
     private let database = Firestore.firestore()
     
     // MARK: - Create Objects
-    public func saveOrder(name: String, products: [Product], totalValue: Int, completion: @escaping(Bool) -> Void) {
-        
-        //TODO: Receber o Order completo, não parcionado
-        let createDate = Date().formattedDate(format: "dd/MM/yyyy HH:mm")
-        let finishDate = Date().formattedDate(format: "dd/MM/yyyy HH:mm")
-        let order = Order(name: name,
-                          orderId: UUID().uuidString,
-                          totalValue: totalValue,
-                          orderDateCreate: createDate,
-                          orderDateFinish: finishDate,
-                          isOpen: true,
-                          paymentType: 0,
-                          products: products)
-        
+    public func saveOrder(order: Order, completion: @escaping(Bool) -> Void) {
         let orderDoc = database.document(Firebase.orders)
-        let arrayOrder: [Order] = [order]
-        let data: [String: Any] = ["data": arrayOrder]
         
-        orderDoc.setData(data)
+        var data: [String : Any] = [String : Any]()
+        var updatedOrders: [[String : Any]] = []
+        
+        getOrders(isOpen: true) { allOrders in
+            for o in allOrders {
+                if o.orderId != order.orderId {
+                    updatedOrders.append(o.toDict())
+                }
+            }
+            updatedOrders.append(order.toDict())
+            data = ["data" : updatedOrders]
+            
+            orderDoc.setData(data, merge: true) { err in
+                if err != nil {
+                    completion(false)
+                } else {
+                    completion(true)
+                }
+            }
+        }
     }
     
     // MARK: - Fetch Objects

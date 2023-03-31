@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		713572CB29D774E3001C3C9C /* PaymentOrderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713572CA29D774E3001C3C9C /* PaymentOrderViewController.swift */; };
 		714D176829C6350F00175FD2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714D176729C6350F00175FD2 /* AppDelegate.swift */; };
 		714D176A29C6350F00175FD2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714D176929C6350F00175FD2 /* SceneDelegate.swift */; };
 		714D177429C6351200175FD2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 714D177329C6351200175FD2 /* Assets.xcassets */; };
@@ -43,6 +44,7 @@
 		71CC84EE29C9C1230058D1EC /* DashboardProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71CC84ED29C9C1230058D1EC /* DashboardProtocol.swift */; };
 		71CC84F129C9C1470058D1EC /* DashboardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71CC84F029C9C1470058D1EC /* DashboardViewModel.swift */; };
 		71E4432929D4C568009A438E /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E4432829D4C568009A438E /* String.swift */; };
+		71E4432B29D50885009A438E /* Encodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E4432A29D50885009A438E /* Encodable.swift */; };
 		71EEB8BB29CCF2CF0044CE44 /* Hero in Frameworks */ = {isa = PBXBuildFile; productRef = 71EEB8BA29CCF2CF0044CE44 /* Hero */; };
 		71EEB8BF29CCF3900044CE44 /* OrderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EEB8BE29CCF3900044CE44 /* OrderViewController.swift */; };
 		71EEB8C129CD0B760044CE44 /* HeroId.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EEB8C029CD0B760044CE44 /* HeroId.swift */; };
@@ -52,6 +54,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		713572CA29D774E3001C3C9C /* PaymentOrderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentOrderViewController.swift; sourceTree = "<group>"; };
 		714D176429C6350F00175FD2 /* notyng.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = notyng.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		714D176729C6350F00175FD2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		714D176929C6350F00175FD2 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -60,7 +63,7 @@
 		714D177829C6351200175FD2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		714D178029C63B2F00175FD2 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		714D178229C7E2E100175FD2 /* ProductConstant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductConstant.swift; sourceTree = "<group>"; };
-		714D17CD29C8038700175FD2 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
+		714D17CD29C8038700175FD2 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; wrapsLines = 0; };
 		71619BC829D354B1002AFB3E /* ListProductViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListProductViewModel.swift; sourceTree = "<group>"; };
 		71619BD129D46B13002AFB3E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		71619BD429D476C8002AFB3E /* Firebase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Firebase.swift; sourceTree = "<group>"; };
@@ -85,6 +88,7 @@
 		71CC84ED29C9C1230058D1EC /* DashboardProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardProtocol.swift; sourceTree = "<group>"; };
 		71CC84F029C9C1470058D1EC /* DashboardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardViewModel.swift; sourceTree = "<group>"; };
 		71E4432829D4C568009A438E /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
+		71E4432A29D50885009A438E /* Encodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Encodable.swift; sourceTree = "<group>"; };
 		71EEB8BE29CCF3900044CE44 /* OrderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderViewController.swift; sourceTree = "<group>"; };
 		71EEB8C029CD0B760044CE44 /* HeroId.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeroId.swift; sourceTree = "<group>"; };
 		71EEB8C329CD10F50044CE44 /* ProductTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductTableViewCell.swift; sourceTree = "<group>"; };
@@ -109,6 +113,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		713572C829D77485001C3C9C /* Payment */ = {
+			isa = PBXGroup;
+			children = (
+				713572C929D77499001C3C9C /* View */,
+			);
+			path = Payment;
+			sourceTree = "<group>";
+		};
+		713572C929D77499001C3C9C /* View */ = {
+			isa = PBXGroup;
+			children = (
+				713572CA29D774E3001C3C9C /* PaymentOrderViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		714D175B29C6350F00175FD2 = {
 			isa = PBXGroup;
 			children = (
@@ -252,6 +272,7 @@
 				71CC84E629C93DAC0058D1EC /* Date.swift */,
 				71C1EA3F29CCAD670003407B /* Int.swift */,
 				71E4432829D4C568009A438E /* String.swift */,
+				71E4432A29D50885009A438E /* Encodable.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -259,6 +280,7 @@
 		71CC84DE29C92F6E0058D1EC /* Feature */ = {
 			isa = PBXGroup;
 			children = (
+				713572C829D77485001C3C9C /* Payment */,
 				71BEEC7A29CE29CA002ED7EF /* Products */,
 				71EEB8BC29CCF35B0044CE44 /* Order */,
 				71CC84EA29C9C0F00058D1EC /* Dashboard */,
@@ -476,9 +498,11 @@
 				714D176829C6350F00175FD2 /* AppDelegate.swift in Sources */,
 				71BEEC8029CE2DC2002ED7EF /* ListProductProtocol.swift in Sources */,
 				71CC84F129C9C1470058D1EC /* DashboardViewModel.swift in Sources */,
+				71E4432B29D50885009A438E /* Encodable.swift in Sources */,
 				71CC84E729C93DAC0058D1EC /* Date.swift in Sources */,
 				71C1EA4029CCAD670003407B /* Int.swift in Sources */,
 				7182775C29CB56F00096E7AC /* FloatingButton.swift in Sources */,
+				713572CB29D774E3001C3C9C /* PaymentOrderViewController.swift in Sources */,
 				71EEB8BF29CCF3900044CE44 /* OrderViewController.swift in Sources */,
 				71619BD529D476C8002AFB3E /* Firebase.swift in Sources */,
 				71BEEC7929CE1F64002ED7EF /* AddProductFooterView.swift in Sources */,

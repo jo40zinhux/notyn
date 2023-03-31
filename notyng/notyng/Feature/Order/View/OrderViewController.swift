@@ -101,8 +101,11 @@ class OrderViewController: UIViewController {
     }()
     
     private var footerView: AddProductFooterView?
+    private var finishOrderButton: FloatingButton = FloatingButton(backgroundColor: Colors.primaryColor,
+                                                                iconImage: Icons.receipt,
+                                                                cornerRadius: ValueConst.x32)
     
-    private lazy var viewModel: OrderViewModel = {
+    public lazy var viewModel: OrderViewModel = {
         let vm = OrderViewModel()
         
         vm.delegate = self
@@ -126,6 +129,9 @@ class OrderViewController: UIViewController {
     
     // MARK: - Layout Setups
     private func setupLayout() {
+        finishOrderButton.translatesAutoresizingMaskIntoConstraints = false
+        finishOrderButton.heroID = HeroIds.floatingButton
+        
         view.backgroundColor = Colors.primaryColor
         view.addSubview(closeButton)
         view.addSubview(titleLabel)
@@ -134,6 +140,7 @@ class OrderViewController: UIViewController {
         viewBackground.addSubview(nameTextField)
         viewBackground.addSubview(textFieldView)
         viewBackground.addSubview(productsTableView)
+        viewBackground.addSubview(finishOrderButton)
         
         productsTableView.register(ProductTableViewCell.self,
                                    forCellReuseIdentifier: ProductTableViewCell.identifier)
@@ -164,7 +171,7 @@ class OrderViewController: UIViewController {
             totalValueLabel.heightAnchor.constraint(equalToConstant: ValueConst.x48),
             
             viewBackground.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: ValueConst.x8),
-            viewBackground.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: ValueConst.x8),
+            viewBackground.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -ValueConst.x8),
             viewBackground.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: ValueConst.x8),
             viewBackground.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -ValueConst.x8),
             
@@ -181,6 +188,11 @@ class OrderViewController: UIViewController {
             productsTableView.leadingAnchor.constraint(equalTo: viewBackground.leadingAnchor, constant: ValueConst.x8),
             productsTableView.trailingAnchor.constraint(equalTo: viewBackground.trailingAnchor, constant: -ValueConst.x8),
             productsTableView.bottomAnchor.constraint(equalTo: viewBackground.bottomAnchor, constant: -ValueConst.x8),
+            
+            finishOrderButton.widthAnchor.constraint(equalToConstant: ValueConst.x64),
+            finishOrderButton.heightAnchor.constraint(equalToConstant: ValueConst.x64),
+            finishOrderButton.bottomAnchor.constraint(equalTo: viewBackground.bottomAnchor, constant: -ValueConst.x24),
+            finishOrderButton.trailingAnchor.constraint(equalTo: viewBackground.trailingAnchor, constant: -ValueConst.x16),
         ])
     }
     
@@ -188,6 +200,7 @@ class OrderViewController: UIViewController {
     private func setupActions() {
         closeButton.addTarget(self, action: #selector(dismissView), for: .touchUpInside)
         footerView?.interactionButton.addTarget(self, action: #selector(openAllProducts), for: .touchUpInside)
+        finishOrderButton.interactionButton.addTarget(self, action: #selector(finishOrder), for: .touchUpInside)
     }
     
     @objc
@@ -211,6 +224,16 @@ class OrderViewController: UIViewController {
         
         listProductsVC.delegate = self
         present(listProductsVC, animated: true, completion: nil)
+    }
+    
+    @objc
+    private func finishOrder() {
+        let paymentVC = PaymentOrderViewController()
+
+        paymentVC.hero.isEnabled = true
+        paymentVC.modalPresentationStyle = .overFullScreen
+        
+        self.present(paymentVC, animated: true)
     }
 }
 

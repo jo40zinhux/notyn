@@ -104,6 +104,7 @@ class DashboardViewController: UIViewController {
     private func setupLayout() {
         view.backgroundColor = Colors.primaryColor
         addOrderButton.translatesAutoresizingMaskIntoConstraints = false
+        addOrderButton.heroID = HeroIds.floatingButton
         
         view.addSubview(dashboardAnimationView)
         view.addSubview(titleLabel)
@@ -170,6 +171,11 @@ class DashboardViewController: UIViewController {
 extension DashboardViewController: DashboardProtocol {
     public func fetchOrdersListData() {
         ordersTableView.reloadData()
+        let topRow = IndexPath(row: 0,
+                               section: 0)
+        self.ordersTableView.scrollToRow(at: topRow,
+                                         at: .top,
+                                         animated: true)
     }
     
     public func fetchOrdersListFailData() {
@@ -181,7 +187,7 @@ extension DashboardViewController: DashboardProtocol {
     }
     
     public func fetchTotalValueFailData() {
-        totalValueLabel.text = "R$ 0"
+        totalValueLabel.text = "R$ ?"
     }
 }
 
@@ -204,13 +210,13 @@ extension DashboardViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let order = viewModel.orders[indexPath.row]
-        viewModel.setOrderSelected(orderId: order.orderId)
         
         tableView.deselectRow(at: indexPath, animated: true)
         
         let orderVC = OrderViewController()
         orderVC.hero.isEnabled = true
         orderVC.modalPresentationStyle = .overFullScreen
+        orderVC.viewModel.order = order
         
         self.present(orderVC, animated: true)
     }
