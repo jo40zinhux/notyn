@@ -36,6 +36,7 @@ class DashboardViewController: UIViewController {
         label.numberOfLines = 0
         label.textColor = Colors.backgroundPrimaryColor
         label.heroID = HeroIds.totalPrice
+        label.isUserInteractionEnabled = true
         
         return label
     }()
@@ -90,6 +91,7 @@ class DashboardViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        showLoader()
         hero.isEnabled = true
         
         setupLayout()
@@ -154,11 +156,23 @@ class DashboardViewController: UIViewController {
     // MARK: - Action Setups
     private func setupAction() {
         addOrderButton.interactionButton.addTarget(self, action: #selector(addOrder), for: .touchUpInside)
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(openAnalysis))
+        totalValueLabel.addGestureRecognizer(tap)
     }
     
     @objc
     private func addOrder() {
         let orderVC = OrderViewController()
+        orderVC.hero.isEnabled = true
+        orderVC.modalPresentationStyle = .overFullScreen
+        
+        self.present(orderVC, animated: true)
+    }
+    
+    @objc
+    private func openAnalysis() {
+        let orderVC = PaymentAnalysisViewController()
         orderVC.hero.isEnabled = true
         orderVC.modalPresentationStyle = .overFullScreen
         
@@ -170,6 +184,7 @@ class DashboardViewController: UIViewController {
 // MARK: - Extensions
 extension DashboardViewController: DashboardProtocol {
     public func fetchOrdersListData() {
+        hideLoader()
         ordersTableView.reloadData()
         let topRow = IndexPath(row: 0,
                                section: 0)
@@ -179,6 +194,7 @@ extension DashboardViewController: DashboardProtocol {
     }
     
     public func fetchOrdersListFailData() {
+        hideLoader()
         ordersTableView.reloadData()
     }
     
@@ -203,7 +219,8 @@ extension DashboardViewController: UITableViewDelegate, UITableViewDataSource {
         let products = order.products ?? []
         cell.setupCell(name: order.name,
                        date: order.orderDateCreate.toDate(),
-                       products: products)
+                       products: products,
+                       isOpen: order.isOpen)
         
         return cell
     }

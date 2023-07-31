@@ -23,6 +23,17 @@ class OrderTableViewCell: UITableViewCell {
         return view
     }()
     
+    private var viewIsOpenBackground: UIView = {
+        let view = UIView()
+        
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.layer.masksToBounds = true
+        view.layer.cornerRadius = ValueConst.x12
+        view.backgroundColor = Colors.backgroundTertiaryColor?.withAlphaComponent(0.5)
+        
+        return view
+    }()
+    
     private var orderTitleLabel: UILabel = {
         let label = UILabel()
         
@@ -97,6 +108,7 @@ class OrderTableViewCell: UITableViewCell {
     private func setupLayout() {
         backgroundColor = .clear
         contentView.addSubview(viewBackground)
+        contentView.addSubview(viewIsOpenBackground)
         viewBackground.addSubview(orderTitleLabel)
         viewBackground.addSubview(orderDateLabel)
         viewBackground.addSubview(productsList)
@@ -109,6 +121,11 @@ class OrderTableViewCell: UITableViewCell {
             viewBackground.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -ValueConst.x12),
             viewBackground.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: ValueConst.x12),
             viewBackground.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -ValueConst.x12),
+            
+            viewIsOpenBackground.topAnchor.constraint(equalTo: contentView.topAnchor, constant: ValueConst.x12),
+            viewIsOpenBackground.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -ValueConst.x12),
+            viewIsOpenBackground.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: ValueConst.x12),
+            viewIsOpenBackground.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -ValueConst.x12),
             
             orderTitleLabel.topAnchor.constraint(equalTo: viewBackground.topAnchor, constant: ValueConst.x16),
             orderTitleLabel.leadingAnchor.constraint(equalTo: viewBackground.leadingAnchor, constant: ValueConst.x16),
@@ -131,12 +148,13 @@ class OrderTableViewCell: UITableViewCell {
         ])
     }
     
-    public func setupCell(name: String, date: Date, products: [Product]) {
+    public func setupCell(name: String, date: Date, products: [Product], isOpen: Bool) {
         clearStackView()
         orderTitleLabel.text = name
         orderDateLabel.text = date.formattedDate(format: "dd/MM/yyyy HH:mm")
         setupProductsStackView(products: products)
         orderTotalValue.text = setupTotalValue(products: products)
+        viewIsOpenBackground.isHidden = isOpen
     }
     
     private func clearStackView() {

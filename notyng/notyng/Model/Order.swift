@@ -11,11 +11,11 @@ import FirebaseFirestore
 public struct Order: Codable {
     let name: String
     let orderId: String
-    let totalValue: Int
+    var totalValue: Int
     let orderDateCreate: String
-    let orderDateFinish: String
-    let isOpen: Bool
-    let paymentType: Int
+    var orderDateFinish: String
+    var isOpen: Bool
+    var paymentType: Int
     var products: [Product]?
     
     public func toDict() -> [String: Any] {

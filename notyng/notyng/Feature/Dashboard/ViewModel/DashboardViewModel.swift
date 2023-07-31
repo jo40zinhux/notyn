@@ -15,7 +15,7 @@ public final class DashboardViewModel {
     private var fullOrdersList: [Order] = []
     
     public func fetchData() {
-        DataManager.shared.getOrders(isOpen: true, completion: { allOrders in
+        DataManager.shared.getOrders(completion: { allOrders in
             self.fullOrdersList = allOrders
             self.orders = self.fullOrdersList
             
@@ -61,20 +61,18 @@ public final class DashboardViewModel {
     }
     
     private func getTotalValue() {
-        var totalValue: Int = 0
+        var waitingValue: Int = 0
+        var receivedValue: Int = 0
         if orders.count > 0 {
             for order in orders {
-                if let products = order.products {
-                    if products.count > 0 {
-                        for product in products {
-                            totalValue = totalValue + product.price
-                        }
-                    } else {
-                        totalValue += 0
-                    }
+                waitingValue = waitingValue + order.totalValue
+                if !order.isOpen {
+                    receivedValue = receivedValue + order.totalValue
                 }
-                delegate?.fetchTotalValueData(totalValue: totalValue.toPriceString())
             }
+            
+            let totalValue = "\(receivedValue.toPriceString()) | \(waitingValue.toPriceString())"
+            delegate?.fetchTotalValueData(totalValue: totalValue)
         } else {
             delegate?.fetchTotalValueFailData()
         }

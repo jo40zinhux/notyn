@@ -14,4 +14,5 @@ public protocol OrderProtocol {
     func fetchTotalValueFailData()
     func fetchSaveOrderData()
     func fetchSaveOrderFailtData()
+    func fetchFooterView()
 }

@@ -21,7 +21,7 @@ class DataManager {
         var data: [String : Any] = [String : Any]()
         var updatedOrders: [[String : Any]] = []
         
-        getOrders(isOpen: true) { allOrders in
+        getOrders { allOrders in
             for o in allOrders {
                 if o.orderId != order.orderId {
                     updatedOrders.append(o.toDict())
@@ -41,7 +41,7 @@ class DataManager {
     }
     
     // MARK: - Fetch Objects
-    public func getOrders(isOpen: Bool, completion: @escaping([Order]) -> Void) {
+    public func getOrders(completion: @escaping([Order]) -> Void) {
         let orderDoc = database.document(Firebase.orders)
         orderDoc.getDocument { snapshotData, error in
             guard let snapData = snapshotData?.data(), error == nil else { return }
@@ -51,7 +51,7 @@ class DataManager {
                     let data = try JSONSerialization.data(withJSONObject: sd)
                     let decoder = JSONDecoder()
                     var orders = try decoder.decode([Order].self, from: data)
-                    orders = orders.sorted(by: {$0.orderDateCreate.toDate() < $1.orderDateCreate.toDate()})
+                    orders = orders.sorted(by: {$0.orderDateCreate.toDate() > $1.orderDateCreate.toDate()})
                     completion(orders)
                 } else {
                     completion([])
@@ -59,6 +59,27 @@ class DataManager {
             } catch {
                 completion([])
             }
+        }
+    }
+    
+    public func removeOldOrder() {
+        let orderDoc = database.document(Firebase.orders)
+        var data: [String : Any] = [String : Any]()
+        var updatedOrders: [[String : Any]] = []
+        
+        getOrders { allOrders in
+            for o in allOrders {
+                let dateCreation = o.orderDateCreate.toDate()
+                let nextDay = Date()
+                
+                if dateCreation.daysBetween(compare: nextDay) < 29 {
+                    updatedOrders.append(o.toDict())
+                }
+            }
+            
+            data = ["data" : updatedOrders]
+            
+            orderDoc.setData(data, merge: true)
         }
     }
     

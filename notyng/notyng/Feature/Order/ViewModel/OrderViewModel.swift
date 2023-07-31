@@ -23,6 +23,7 @@ public final class OrderViewModel {
                       isOpen: true,
                       paymentType: 0)
         order?.products = []
+        delegate?.fetchFooterView()
     }
     
     public func fetchData() {
@@ -33,6 +34,7 @@ public final class OrderViewModel {
                 distinctProducts = distinctProducts.sorted(by: {$0.price < $1.price})
                 delegate?.fetchOrderData()
                 delegate?.fetchTotalValueData(totalValue: setupTotalValue())
+                delegate?.fetchFooterView()
             } else {
                 products = []
                 delegate?.fetchOrderFailData()
@@ -60,6 +62,11 @@ public final class OrderViewModel {
         }
     }
     
+    public func hasProduct() -> Bool {
+        let productCount = order?.products?.count ?? 0
+        return productCount > 0
+    }
+    
     public func getCountProducts(product: Product) -> Int {
         let filteredProducts = products.filter({$0.productId == product.productId})
         return filteredProducts.count
@@ -74,6 +81,14 @@ public final class OrderViewModel {
                     self.delegate?.fetchSaveOrderFailtData()
                 }
             }
+        }
+    }
+    
+    public func validateFooterView() -> Bool {
+        if let o = order {
+            return o.isOpen
+        } else {
+            return true
         }
     }
     
@@ -94,16 +109,7 @@ public final class OrderViewModel {
             totalValue = totalValue + product.price
         }
         
+        order?.totalValue = totalValue
         return "\(totalValue.toPriceString())"
-    }
-    
-    private func getTotalValue() -> Int {
-        var totalValue: Int = 0
-        
-        for product in products {
-            totalValue = totalValue + product.price
-        }
-        
-        return totalValue
     }
 }

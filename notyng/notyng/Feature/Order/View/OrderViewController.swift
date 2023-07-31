@@ -63,6 +63,7 @@ class OrderViewController: UIViewController {
     
     private lazy var nameTextField: UITextField = {
         let textField = UITextField()
+        
         textField.delegate = self
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.attributedPlaceholder = NSAttributedString(
@@ -77,6 +78,7 @@ class OrderViewController: UIViewController {
         textField.clearButtonMode = .whileEditing
         textField.contentVerticalAlignment = .center
         textField.backgroundColor = .clear
+        
         return textField
     }()
     
@@ -102,8 +104,8 @@ class OrderViewController: UIViewController {
     
     private var footerView: AddProductFooterView?
     private var finishOrderButton: FloatingButton = FloatingButton(backgroundColor: Colors.primaryColor,
-                                                                iconImage: Icons.receipt,
-                                                                cornerRadius: ValueConst.x32)
+                                                                   iconImage: Icons.receipt,
+                                                                   cornerRadius: ValueConst.x32)
     
     public lazy var viewModel: OrderViewModel = {
         let vm = OrderViewModel()
@@ -144,14 +146,6 @@ class OrderViewController: UIViewController {
         
         productsTableView.register(ProductTableViewCell.self,
                                    forCellReuseIdentifier: ProductTableViewCell.identifier)
-        footerView = AddProductFooterView(backgroundColor: .red,
-                                          iconImage: Icons.addProduct,
-                                          cornerRadius: 12,
-                                          frame: CGRect(x: 0,
-                                                        y: 0,
-                                                        width: productsTableView.frame.size.width,
-                                                        height: ValueConst.x64))
-        productsTableView.tableFooterView = footerView
     }
     
     private func setupLayoutConstraints() {
@@ -196,17 +190,37 @@ class OrderViewController: UIViewController {
         ])
     }
     
+    private func setupFooterView() {
+        if viewModel.validateFooterView() {
+            footerView = AddProductFooterView(backgroundColor: .red,
+                                              iconImage: Icons.addProduct,
+                                              cornerRadius: 12,
+                                              frame: CGRect(x: 0,
+                                                            y: 0,
+                                                            width: productsTableView.frame.size.width,
+                                                            height: ValueConst.x64))
+            productsTableView.tableFooterView = footerView
+            footerView?.interactionButton.addTarget(self, action: #selector(openAllProducts), for: .touchUpInside)
+        } else {
+            finishOrderButton.isHidden = true
+        }
+    }
+    
     // MARK: - Action Setups
     private func setupActions() {
-        closeButton.addTarget(self, action: #selector(dismissView), for: .touchUpInside)
-        footerView?.interactionButton.addTarget(self, action: #selector(openAllProducts), for: .touchUpInside)
         finishOrderButton.interactionButton.addTarget(self, action: #selector(finishOrder), for: .touchUpInside)
+        closeButton.addTarget(self, action: #selector(dismissView), for: .touchUpInside)
     }
     
     @objc
     private func dismissView() {
         if let nameText = nameTextField.text, nameText != "" {
-            viewModel.saveNewOrder(name: nameText)
+            if viewModel.hasProduct() {
+                viewModel.saveNewOrder(name: nameText)
+            } else {
+                self.dismiss(animated: true)
+                presentingViewController?.viewWillAppear(true)
+            }
         } else {
             self.dismiss(animated: true)
             presentingViewController?.viewWillAppear(true)
@@ -229,8 +243,9 @@ class OrderViewController: UIViewController {
     @objc
     private func finishOrder() {
         let paymentVC = PaymentOrderViewController()
-
+        
         paymentVC.hero.isEnabled = true
+        paymentVC.viewModel.order = viewModel.order
         paymentVC.modalPresentationStyle = .overFullScreen
         
         self.present(paymentVC, animated: true)
@@ -264,6 +279,10 @@ extension OrderViewController: OrderProtocol {
     
     func fetchSaveOrderFailtData() {
         print("fail to save")
+    }
+    
+    func fetchFooterView() {
+        self.setupFooterView()
     }
 }
 
@@ -307,9 +326,21 @@ extension OrderViewController: ProductProtocol {
 
 extension OrderViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        textField.isEnabled = false
-        viewModel.createOrder(name: textField.text ?? "")
+        if textField.text != "" {
+            textField.resignFirstResponder()
+            textField.isEnabled = false
+            viewModel.createOrder(name: textField.text ?? "")
+        } else {
+            textField.resignFirstResponder()
+        }
         return true
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if textField.text != "" {
+            textField.resignFirstResponder()
+            textField.isEnabled = false
+            viewModel.createOrder(name: textField.text ?? "")
+        }
     }
 }
