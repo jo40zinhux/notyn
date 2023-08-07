@@ -103,7 +103,7 @@ public final class OrderViewModel {
     }
     
     private func setupTotalValue() -> String {
-        var totalValue: Int = 0
+        var totalValue: Double = 0
         
         for product in products {
             totalValue = totalValue + product.price

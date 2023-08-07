@@ -15,6 +15,7 @@ public final class ListProductViewModel {
     public func fetchData() {
         DataManager.shared.getAllProducts { allProducts in
             self.products = allProducts
+            self.products = self.products.sorted(by: {$0.price < $1.price})
             self.delegate?.fetchData()
         }
     }

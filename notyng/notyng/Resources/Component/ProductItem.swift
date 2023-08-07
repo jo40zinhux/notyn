@@ -103,7 +103,7 @@ public final class ProductItem: UIView {
             productPriceLabel.topAnchor.constraint(equalTo: topAnchor),
             productPriceLabel.bottomAnchor.constraint(equalTo: bottomAnchor),
             productPriceLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
-            productPriceLabel.widthAnchor.constraint(equalToConstant: ValueConst.x64)
+            productPriceLabel.widthAnchor.constraint(equalToConstant: ValueConst.x80)
         ])
     }
 }

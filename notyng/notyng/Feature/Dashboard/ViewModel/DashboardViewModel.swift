@@ -63,8 +63,8 @@ public final class DashboardViewModel {
     }
     
     private func getTotalValue() {
-        var waitingValue: Int = 0
-        var receivedValue: Int = 0
+        var waitingValue: Double = 0
+        var receivedValue: Double = 0
         if orders.count > 0 {
             for order in orders {
                 waitingValue = waitingValue + order.totalValue

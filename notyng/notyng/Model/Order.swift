@@ -11,7 +11,7 @@ import FirebaseFirestore
 public struct Order: Codable {
     let name: String
     let orderId: String
-    var totalValue: Int
+    var totalValue: Double
     let orderDateCreate: String
     var orderDateFinish: String
     var isOpen: Bool

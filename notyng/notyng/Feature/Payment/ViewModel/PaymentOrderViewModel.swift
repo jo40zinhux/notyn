@@ -70,7 +70,7 @@ public final class PaymentOrderViewModel {
     }
     
     private func setupTotalValue(products: [Product]) -> String {
-        var totalValue: Int = 0
+        var totalValue: Double = 0
         
         for product in products {
             totalValue = totalValue + product.price

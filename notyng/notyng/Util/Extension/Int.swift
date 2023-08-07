@@ -12,3 +12,10 @@ extension Int {
         return "R$ \(self)"
     }
 }
+
+
+extension Double {
+    func toPriceString() -> String {
+        return "R$ \(self)"
+    }
+}

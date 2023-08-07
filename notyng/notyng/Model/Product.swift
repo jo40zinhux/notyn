@@ -8,7 +8,7 @@
 
 public struct Product: Codable, Equatable {
     let name: String
-    let price: Int
+    let price: Double
     let productType: Int
     let productId: Int
     
