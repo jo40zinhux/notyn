@@ -7,13 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		710116652A7D8C8500129614 /* DGCharts in Frameworks */ = {isa = PBXBuildFile; productRef = 710116642A7D8C8500129614 /* DGCharts */; };
+		710116682A8072A600129614 /* PaymentAnalysisViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710116672A8072A600129614 /* PaymentAnalysisViewModel.swift */; };
+		7101166B2A80739100129614 /* PaymentAnalysisProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7101166A2A80739100129614 /* PaymentAnalysisProtocol.swift */; };
 		71097A5529E44529005B6A9E /* MethodTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71097A5429E44529005B6A9E /* MethodTextField.swift */; };
 		71097A5829E44B3F005B6A9E /* PaymentOrderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71097A5729E44B3F005B6A9E /* PaymentOrderViewModel.swift */; };
 		71097A5A29E44C11005B6A9E /* PaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71097A5929E44C11005B6A9E /* PaymentMethod.swift */; };
 		71097A5D29E44F81005B6A9E /* PaymentOrderProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71097A5C29E44F81005B6A9E /* PaymentOrderProtocol.swift */; };
 		713572CB29D774E3001C3C9C /* PaymentOrderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713572CA29D774E3001C3C9C /* PaymentOrderViewController.swift */; };
 		714D176829C6350F00175FD2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714D176729C6350F00175FD2 /* AppDelegate.swift */; };
-		714D176A29C6350F00175FD2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714D176929C6350F00175FD2 /* SceneDelegate.swift */; };
 		714D177429C6351200175FD2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 714D177329C6351200175FD2 /* Assets.xcassets */; };
 		714D177729C6351200175FD2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 714D177529C6351200175FD2 /* LaunchScreen.storyboard */; };
 		714D178129C63B2F00175FD2 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714D178029C63B2F00175FD2 /* Color.swift */; };
@@ -29,7 +31,6 @@
 		7182775929CB533C0096E7AC /* Nexa-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7182775729CB533B0096E7AC /* Nexa-ExtraLight.ttf */; };
 		7182775C29CB56F00096E7AC /* FloatingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7182775B29CB56F00096E7AC /* FloatingButton.swift */; };
 		71B248312A014A4B00EAB578 /* PaymentAnalysisViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71B248302A014A4B00EAB578 /* PaymentAnalysisViewController.swift */; };
-		71B248342A044E4E00EAB578 /* Charts in Frameworks */ = {isa = PBXBuildFile; productRef = 71B248332A044E4E00EAB578 /* Charts */; };
 		71BEEC7429CE0BF5002ED7EF /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BEEC7029CE0BF5002ED7EF /* Product.swift */; };
 		71BEEC7729CE0BF5002ED7EF /* Order.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BEEC7329CE0BF5002ED7EF /* Order.swift */; };
 		71BEEC7929CE1F64002ED7EF /* AddProductFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BEEC7829CE1F64002ED7EF /* AddProductFooterView.swift */; };
@@ -63,6 +64,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		710116672A8072A600129614 /* PaymentAnalysisViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentAnalysisViewModel.swift; sourceTree = "<group>"; };
+		7101166A2A80739100129614 /* PaymentAnalysisProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentAnalysisProtocol.swift; sourceTree = "<group>"; };
 		71097A5429E44529005B6A9E /* MethodTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MethodTextField.swift; sourceTree = "<group>"; };
 		71097A5729E44B3F005B6A9E /* PaymentOrderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentOrderViewModel.swift; sourceTree = "<group>"; };
 		71097A5929E44C11005B6A9E /* PaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethod.swift; sourceTree = "<group>"; };
@@ -70,7 +73,6 @@
 		713572CA29D774E3001C3C9C /* PaymentOrderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentOrderViewController.swift; sourceTree = "<group>"; };
 		714D176429C6350F00175FD2 /* notyng.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = notyng.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		714D176729C6350F00175FD2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		714D176929C6350F00175FD2 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		714D177329C6351200175FD2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		714D177629C6351200175FD2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		714D177829C6351200175FD2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -120,10 +122,10 @@
 			files = (
 				71CC84C529C8FB930058D1EC /* IQKeyboardManagerSwift in Frameworks */,
 				71EEB8BB29CCF2CF0044CE44 /* Hero in Frameworks */,
-				71B248342A044E4E00EAB578 /* Charts in Frameworks */,
 				71619BCE29D4664D002AFB3E /* FirebaseCrashlytics in Frameworks */,
 				71619BCC29D4664D002AFB3E /* FirebaseAnalytics in Frameworks */,
 				71CC84C829C8FBCA0058D1EC /* Lottie in Frameworks */,
+				710116652A7D8C8500129614 /* DGCharts in Frameworks */,
 				71619BD029D4664D002AFB3E /* FirebaseFirestore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -131,6 +133,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		710116662A80728A00129614 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				710116672A8072A600129614 /* PaymentAnalysisViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		710116692A80737C00129614 /* Protocol */ = {
+			isa = PBXGroup;
+			children = (
+				7101166A2A80739100129614 /* PaymentAnalysisProtocol.swift */,
+			);
+			path = Protocol;
+			sourceTree = "<group>";
+		};
 		71097A5629E44B24005B6A9E /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
@@ -260,6 +278,8 @@
 		71B2482E2A0149FB00EAB578 /* PaymentAnalysis */ = {
 			isa = PBXGroup;
 			children = (
+				710116692A80737C00129614 /* Protocol */,
+				710116662A80728A00129614 /* ViewModel */,
 				71B2482F2A014A2500EAB578 /* View */,
 			);
 			path = PaymentAnalysis;
@@ -314,7 +334,6 @@
 				71619BD129D46B13002AFB3E /* GoogleService-Info.plist */,
 				7182775A29CB56D40096E7AC /* Component */,
 				714D176729C6350F00175FD2 /* AppDelegate.swift */,
-				714D176929C6350F00175FD2 /* SceneDelegate.swift */,
 				71CC84E129C92FC20058D1EC /* Font */,
 				71CC84CB29C8FE310058D1EC /* lottie_order_animation.json */,
 				714D177329C6351200175FD2 /* Assets.xcassets */,
@@ -465,7 +484,7 @@
 				71619BCB29D4664D002AFB3E /* FirebaseAnalytics */,
 				71619BCD29D4664D002AFB3E /* FirebaseCrashlytics */,
 				71619BCF29D4664D002AFB3E /* FirebaseFirestore */,
-				71B248332A044E4E00EAB578 /* Charts */,
+				710116642A7D8C8500129614 /* DGCharts */,
 			);
 			productName = notyng;
 			productReference = 714D176429C6350F00175FD2 /* notyng.app */;
@@ -500,7 +519,7 @@
 				71CC84C629C8FBCA0058D1EC /* XCRemoteSwiftPackageReference "lottie-spm" */,
 				71EEB8B929CCF2CF0044CE44 /* XCRemoteSwiftPackageReference "Hero" */,
 				71619BCA29D4664D002AFB3E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
-				71B248322A044E4E00EAB578 /* XCRemoteSwiftPackageReference "Charts" */,
+				710116632A7D8C8500129614 /* XCRemoteSwiftPackageReference "Charts" */,
 			);
 			productRefGroup = 714D176529C6350F00175FD2 /* Products */;
 			projectDirPath = "";
@@ -559,6 +578,7 @@
 				71BEEC8029CE2DC2002ED7EF /* ListProductProtocol.swift in Sources */,
 				71CC84F129C9C1470058D1EC /* DashboardViewModel.swift in Sources */,
 				71097A5829E44B3F005B6A9E /* PaymentOrderViewModel.swift in Sources */,
+				7101166B2A80739100129614 /* PaymentAnalysisProtocol.swift in Sources */,
 				71097A5D29E44F81005B6A9E /* PaymentOrderProtocol.swift in Sources */,
 				71E4432B29D50885009A438E /* Encodable.swift in Sources */,
 				71F4FCA329F86E7F00BDD195 /* LoaderView.swift in Sources */,
@@ -585,7 +605,7 @@
 				71097A5A29E44C11005B6A9E /* PaymentMethod.swift in Sources */,
 				714D17CE29C8038700175FD2 /* DataManager.swift in Sources */,
 				71DBF5532A3CED4400C8AE78 /* CopilotTest.swift in Sources */,
-				714D176A29C6350F00175FD2 /* SceneDelegate.swift in Sources */,
+				710116682A8072A600129614 /* PaymentAnalysisViewModel.swift in Sources */,
 				71BEEC7729CE0BF5002ED7EF /* Order.swift in Sources */,
 				71BEEC7D29CE29F9002ED7EF /* ListProductViewController.swift in Sources */,
 				71097A5529E44529005B6A9E /* MethodTextField.swift in Sources */,
@@ -739,9 +759,10 @@
 				INFOPLIST_KEY_CFBundleDisplayName = notyn;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -768,9 +789,10 @@
 				INFOPLIST_KEY_CFBundleDisplayName = notyn;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -808,20 +830,20 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		710116632A7D8C8500129614 /* XCRemoteSwiftPackageReference "Charts" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/danielgindi/Charts.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
 		71619BCA29D4664D002AFB3E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 9.0.0;
-			};
-		};
-		71B248322A044E4E00EAB578 /* XCRemoteSwiftPackageReference "Charts" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/danielgindi/Charts.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 3.0.0;
 			};
 		};
 		71CC84C329C8FB930058D1EC /* XCRemoteSwiftPackageReference "IQKeyboardManager" */ = {
@@ -851,6 +873,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		710116642A7D8C8500129614 /* DGCharts */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 710116632A7D8C8500129614 /* XCRemoteSwiftPackageReference "Charts" */;
+			productName = DGCharts;
+		};
 		71619BCB29D4664D002AFB3E /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 71619BCA29D4664D002AFB3E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
@@ -865,11 +892,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 71619BCA29D4664D002AFB3E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseFirestore;
-		};
-		71B248332A044E4E00EAB578 /* Charts */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 71B248322A044E4E00EAB578 /* XCRemoteSwiftPackageReference "Charts" */;
-			productName = Charts;
 		};
 		71CC84C429C8FB930058D1EC /* IQKeyboardManagerSwift */ = {
 			isa = XCSwiftPackageProductDependency;

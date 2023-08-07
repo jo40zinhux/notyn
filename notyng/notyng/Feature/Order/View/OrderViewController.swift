@@ -8,7 +8,7 @@
 import UIKit
 import Hero
 
-class OrderViewController: UIViewController {
+class OrderViewController: UIViewController, UIViewControllerTransitioningDelegate {
     
     // MARK: - Properties
     private var closeButton: UIButton = {
@@ -231,9 +231,15 @@ class OrderViewController: UIViewController {
     private func openAllProducts() {
         let listProductsVC = ListProductViewController()
         listProductsVC.modalPresentationStyle = .pageSheet
-        if let sheet = listProductsVC.sheetPresentationController {
-            sheet.detents = [.medium(), .large()]
-            sheet.preferredCornerRadius = ValueConst.x24
+        
+        if #available(iOS 15.0, *) {
+            if let sheet = listProductsVC.sheetPresentationController {
+                sheet.detents = [.medium(), .large()]
+                sheet.preferredCornerRadius = ValueConst.x24
+            }
+        } else {
+            listProductsVC.modalPresentationStyle = .custom
+            listProductsVC.transitioningDelegate = self
         }
         
         listProductsVC.delegate = self

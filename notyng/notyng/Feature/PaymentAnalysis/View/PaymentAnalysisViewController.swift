@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import DGCharts
 
 class PaymentAnalysisViewController: UIViewController {
     
@@ -46,6 +47,34 @@ class PaymentAnalysisViewController: UIViewController {
         return label
     }()
     
+    private lazy var pieChartView: PieChartView = {
+        let chartView = PieChartView()
+        let d = Description()
+        
+        d.text = "Tipos de pagamento"
+        d.textColor = Colors.backgroundSecondaryColor ?? .black
+        
+        chartView.translatesAutoresizingMaskIntoConstraints = false
+        chartView.chartDescription = d
+        chartView.centerText = ""
+        chartView.holeRadiusPercent = 0.2
+        chartView.transparentCircleColor = UIColor.clear
+        chartView.noDataText = "Sem dados"
+        chartView.noDataTextColor = Colors.backgroundSecondaryColor ?? .black
+        chartView.isUserInteractionEnabled = true
+        
+        return chartView
+    }()
+    
+    private lazy var viewModel: PaymentAnalysisViewModel = {
+        let viewModel = PaymentAnalysisViewModel()
+        
+        viewModel.delegate = self
+        
+        return viewModel
+    }()
+    
+    
     // MARK: - View LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -56,6 +85,8 @@ class PaymentAnalysisViewController: UIViewController {
         
         setupLayout()
         setupLayoutConstraints()
+        setupActions()
+        viewModel.fetchData()
     }
     
     // MARK: - Layout Setups
@@ -64,6 +95,7 @@ class PaymentAnalysisViewController: UIViewController {
         view.addSubview(closeButton)
         view.addSubview(viewContent)
         viewContent.addSubview(titleLabel)
+        viewContent.addSubview(pieChartView)
     }
     
     private func setupLayoutConstraints() {
@@ -81,7 +113,37 @@ class PaymentAnalysisViewController: UIViewController {
             titleLabel.topAnchor.constraint(equalTo: viewContent.topAnchor, constant: ValueConst.x12),
             titleLabel.centerXAnchor.constraint(equalTo: viewContent.centerXAnchor),
             titleLabel.heightAnchor.constraint(equalToConstant: ValueConst.x64),
+            
+            pieChartView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: ValueConst.x16),
+            pieChartView.leadingAnchor.constraint(equalTo: viewContent.leadingAnchor, constant: ValueConst.x16),
+            pieChartView.trailingAnchor.constraint(equalTo: viewContent.trailingAnchor, constant: -ValueConst.x16),
+            pieChartView.bottomAnchor.constraint(equalTo: viewContent.bottomAnchor, constant: -ValueConst.x16),
+            
         ])
+    }
+    
+    private func setupChart() {
+        let track = ["Pix", "Cartão", "Dinheiro"]
+        var entries = [PieChartDataEntry]()
+        
+        for (index, value) in viewModel.paymentEntries.enumerated() {
+            let entry = PieChartDataEntry()
+            entry.y = Double(value)
+            entry.label = track[index]
+            entries.append(entry)
+        }
+        
+        let set = PieChartDataSet(entries: entries, label: "")
+        set.entryLabelColor = Colors.backgroundSecondaryColor
+        var colors: [UIColor] = []
+        
+        colors.append(Colors.primaryColor ?? .white)
+        colors.append(Colors.secondaryColor ?? .white)
+        colors.append(Colors.tertiaryColor ?? .white)
+        
+        set.colors = colors
+        let data = PieChartData(dataSet: set)
+        pieChartView.data = data
     }
     
     // MARK: - Action Setups
@@ -94,3 +156,16 @@ class PaymentAnalysisViewController: UIViewController {
         self.dismiss(animated: true)
     }
 }
+
+
+// MARK: - Extensions
+extension PaymentAnalysisViewController: PaymentAnalysisProtocol {
+    func fetchPaymentEntriesData() {
+        setupChart()
+    }
+    
+    func fetchPaymentEntriesFailData() {
+        setupChart()
+    }
+}
+

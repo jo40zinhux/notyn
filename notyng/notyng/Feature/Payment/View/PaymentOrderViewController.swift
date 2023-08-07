@@ -323,6 +323,11 @@ extension PaymentOrderViewController: PaymentOrderProtocol {
 
 extension PaymentOrderViewController: UITextFieldDelegate {
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        if paymentMethodTextField.text == "" {
+            paymentMethodTextField.text = MethodIcon.getNameFromMethodType(method: .pix)
+            viewModel.selectedMethod = .pix
+        }
+        
         return true
     }
 }

@@ -11,7 +11,12 @@ public final class LoaderView: UIView {
     
     // MARK: - Properties
     private var spinningLoader: UIActivityIndicatorView = {
-        let spinning = UIActivityIndicatorView(style: .large)
+        var spinning = UIActivityIndicatorView()
+        if #available(iOS 13.0, *) {
+            spinning.style = .large
+        } else {
+            spinning.style = .whiteLarge
+        }
         
         spinning.translatesAutoresizingMaskIntoConstraints = false
         

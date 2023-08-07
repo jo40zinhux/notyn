@@ -36,6 +36,8 @@ class DashboardViewController: UIViewController {
         label.numberOfLines = 0
         label.textColor = Colors.backgroundPrimaryColor
         label.heroID = HeroIds.totalPrice
+        label.adjustsFontSizeToFitWidth = true
+        label.minimumScaleFactor = 0.5
         label.isUserInteractionEnabled = true
         
         return label
@@ -70,6 +72,14 @@ class DashboardViewController: UIViewController {
         tableView.backgroundColor = .clear
         
         return tableView
+    }()
+    
+    private let refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        
+        refreshControl.tintColor = Colors.primaryColor
+        
+        return refreshControl
     }()
     
     private var addOrderButton: FloatingButton = FloatingButton(backgroundColor: Colors.primaryColor,
@@ -117,6 +127,7 @@ class DashboardViewController: UIViewController {
         dashboardView.addSubview(addOrderButton)
         
         ordersTableView.register(OrderTableViewCell.self, forCellReuseIdentifier: OrderTableViewCell.identifier)
+        ordersTableView.refreshControl = refreshControl
         dashboardAnimationView.contentMode = .top
     }
     
@@ -130,6 +141,8 @@ class DashboardViewController: UIViewController {
             totalValueLabel.topAnchor.constraint(equalTo: titleLabel.topAnchor),
             totalValueLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -ValueConst.x16),
             totalValueLabel.heightAnchor.constraint(equalToConstant: ValueConst.x48),
+            totalValueLabel.widthAnchor.constraint(equalToConstant: ValueConst.x168),
+            
             
             dashboardAnimationView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: ValueConst.x24),
             dashboardAnimationView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
@@ -159,6 +172,8 @@ class DashboardViewController: UIViewController {
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(openAnalysis))
         totalValueLabel.addGestureRecognizer(tap)
+        
+        refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
     }
     
     @objc
@@ -178,6 +193,11 @@ class DashboardViewController: UIViewController {
         
         self.present(orderVC, animated: true)
     }
+    
+    @objc
+    private func refreshData() {
+        viewModel.fetchData()
+    }
 }
 
 
@@ -185,6 +205,7 @@ class DashboardViewController: UIViewController {
 extension DashboardViewController: DashboardProtocol {
     public func fetchOrdersListData() {
         hideLoader()
+        refreshControl.endRefreshing()
         ordersTableView.reloadData()
         let topRow = IndexPath(row: 0,
                                section: 0)
@@ -195,6 +216,7 @@ extension DashboardViewController: DashboardProtocol {
     
     public func fetchOrdersListFailData() {
         hideLoader()
+        refreshControl.endRefreshing()
         ordersTableView.reloadData()
     }
     

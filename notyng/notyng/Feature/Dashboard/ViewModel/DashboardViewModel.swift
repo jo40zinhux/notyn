@@ -15,18 +15,20 @@ public final class DashboardViewModel {
     private var fullOrdersList: [Order] = []
     
     public func fetchData() {
-        DataManager.shared.getOrders(completion: { allOrders in
+        DataManager.shared.getOrders { allOrders in
             self.fullOrdersList = allOrders
             self.orders = self.fullOrdersList
             
             if self.orders.count > 0 {
+                self.orders = self.orders.sorted(by: {$0.orderDateFinish < $1.orderDateFinish})
+                
                 self.delegate?.fetchOrdersListData()
                 self.getTotalValue()
             } else {
                 self.delegate?.fetchOrdersListFailData()
                 self.delegate?.fetchTotalValueFailData()
             }
-        })
+        }
     }
     
     public func filterOrderByName(name: String) {
