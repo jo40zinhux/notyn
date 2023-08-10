@@ -25,4 +25,5 @@ struct ValueConst {
     static let x140 = 140.0
     static let x168 = 168.0
     static let x240 = 240.0
+    static let x280 = 280.0
 }

@@ -62,8 +62,39 @@ class PaymentAnalysisViewController: UIViewController {
         chartView.noDataText = "Sem dados"
         chartView.noDataTextColor = Colors.backgroundSecondaryColor ?? .black
         chartView.isUserInteractionEnabled = true
+        chartView.delegate = self
         
         return chartView
+    }()
+    
+    private var totalValueLabel: UILabel = {
+        let label = UILabel()
+        
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = Fonts.titleBold24
+        label.textAlignment = .right
+        label.text = "R$ ?"
+        label.numberOfLines = 0
+        label.textColor = Colors.backgroundTertiaryColor
+        label.heroID = HeroIds.totalPrice
+        label.adjustsFontSizeToFitWidth = true
+        label.minimumScaleFactor = 0.5
+        label.isUserInteractionEnabled = true
+        
+        return label
+    }()
+    
+    private lazy var ordersTableView: UITableView = {
+        let tableView = UITableView()
+        
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.estimatedRowHeight = UITableView.automaticDimension
+        tableView.separatorStyle = .none
+        tableView.backgroundColor = .clear
+        
+        return tableView
     }()
     
     private lazy var viewModel: PaymentAnalysisViewModel = {
@@ -96,6 +127,10 @@ class PaymentAnalysisViewController: UIViewController {
         view.addSubview(viewContent)
         viewContent.addSubview(titleLabel)
         viewContent.addSubview(pieChartView)
+        viewContent.addSubview(totalValueLabel)
+        viewContent.addSubview(ordersTableView)
+        
+        ordersTableView.register(OrderTableViewCell.self, forCellReuseIdentifier: OrderTableViewCell.identifier)
     }
     
     private func setupLayoutConstraints() {
@@ -117,8 +152,16 @@ class PaymentAnalysisViewController: UIViewController {
             pieChartView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: ValueConst.x16),
             pieChartView.leadingAnchor.constraint(equalTo: viewContent.leadingAnchor, constant: ValueConst.x16),
             pieChartView.trailingAnchor.constraint(equalTo: viewContent.trailingAnchor, constant: -ValueConst.x16),
-            pieChartView.bottomAnchor.constraint(equalTo: viewContent.bottomAnchor, constant: -ValueConst.x16),
+            pieChartView.heightAnchor.constraint(equalToConstant: ValueConst.x240),
             
+            totalValueLabel.topAnchor.constraint(equalTo: pieChartView.bottomAnchor, constant: ValueConst.x8),
+            totalValueLabel.trailingAnchor.constraint(equalTo: pieChartView.trailingAnchor),
+            totalValueLabel.heightAnchor.constraint(equalToConstant: ValueConst.x64),
+            
+            ordersTableView.topAnchor.constraint(equalTo: totalValueLabel.bottomAnchor, constant: ValueConst.x8),
+            ordersTableView.leadingAnchor.constraint(equalTo: viewContent.leadingAnchor),
+            ordersTableView.trailingAnchor.constraint(equalTo: viewContent.trailingAnchor),
+            ordersTableView.bottomAnchor.constraint(equalTo: viewContent.bottomAnchor, constant: -ValueConst.x16),
         ])
     }
     
@@ -130,6 +173,7 @@ class PaymentAnalysisViewController: UIViewController {
             let entry = PieChartDataEntry()
             entry.y = Double(value)
             entry.label = track[index]
+            entry.accessibilityLabel = track[index]
             entries.append(entry)
         }
         
@@ -167,5 +211,45 @@ extension PaymentAnalysisViewController: PaymentAnalysisProtocol {
     func fetchPaymentEntriesFailData() {
         setupChart()
     }
+    
+    func fetchTotalValueByType(totalValue: String) {
+        totalValueLabel.text = totalValue
+    }
 }
 
+extension PaymentAnalysisViewController: ChartViewDelegate {
+    func chartValueSelected(_ chartView: ChartViewBase, entry: ChartDataEntry, highlight: Highlight) {
+        if (entry.y == Double(viewModel.paymentEntries.first ?? 0) && (entry.accessibilityLabel == "Pix")) {
+            viewModel.getOrderByPayment(method: .pix)
+        } else if (entry.y == Double(viewModel.paymentEntries.last ?? 0) && (entry.accessibilityLabel == "Dinheiro")) {
+            viewModel.getOrderByPayment(method: .cash)
+        } else {
+            viewModel.getOrderByPayment(method: .card)
+        }
+        
+        self.ordersTableView.reloadData()
+    }
+}
+
+extension PaymentAnalysisViewController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return viewModel.getOrdersFilteredByPayment().count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: OrderTableViewCell.identifier,
+                                                       for: indexPath) as? OrderTableViewCell else {return UITableViewCell()}
+        let order = viewModel.getOrdersFilteredByPayment()[indexPath.row]
+        let products = order.products ?? []
+        cell.setupCell(name: order.name,
+                       date: order.orderDateCreate.toDate(),
+                       products: products,
+                       isOpen: order.isOpen)
+        
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+}
