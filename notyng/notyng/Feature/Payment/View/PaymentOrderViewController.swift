@@ -342,6 +342,8 @@ extension PaymentOrderViewController : UIPickerViewDataSource, UIPickerViewDeleg
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        finishButton.isHidden = false
+        finishButton.isEnabled = true
         return MethodIcon.getNameFromMethodType(method: viewModel.methods[row])
     }
     
