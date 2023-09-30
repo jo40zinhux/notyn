@@ -15,7 +15,7 @@ public final class OrderViewModel {
     public var distinctProducts: [Product] = []
     
     public func createOrder(name: String) {
-        order = Order(name: name,
+        order = Order(name: name.capitalized,
                       orderId: UUID().uuidString,
                       totalValue: 0,
                       orderDateCreate: Date().formattedDate(format: "dd/MM/yyyy HH:mm"),

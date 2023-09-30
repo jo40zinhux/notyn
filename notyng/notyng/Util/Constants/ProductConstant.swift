@@ -18,6 +18,10 @@ enum ProductType : Int {
     case isotonic
     case lollipop
     case cleaning
+    case football
+    case sandwich
+    case hotDog
+    case coffee
 }
 
 struct ProductIcon {
@@ -30,6 +34,10 @@ struct ProductIcon {
     static let isotonic = "ic_isotonic"
     static let lollipop = "ic_lollipop"
     static let cleaning = "ic_cleaning"
+    static let football = "ic_football"
+    static let sandwich = "ic_sandwich"
+    static let hotDog = "ic_hotdog"
+    static let coffee = "ic_coffee"
     
     public static func getIconNameForType(productType: ProductType) -> String? {
         switch productType {
@@ -52,6 +60,14 @@ struct ProductIcon {
             return ProductIcon.lollipop
         case .cleaning:
             return ProductIcon.cleaning
+        case .football:
+            return ProductIcon.football
+        case .sandwich:
+            return ProductIcon.sandwich
+        case .hotDog:
+            return ProductIcon.hotDog
+        case .coffee:
+            return ProductIcon.coffee
         }
     }
 }

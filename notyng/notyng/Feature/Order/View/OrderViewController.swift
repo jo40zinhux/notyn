@@ -73,7 +73,8 @@ class OrderViewController: UIViewController, UIViewControllerTransitioningDelega
         textField.font = Fonts.titleBold24
         textField.textColor = Colors.backgroundTertiaryColor
         textField.autocorrectionType = .no
-        textField.keyboardType = .namePhonePad
+        textField.keyboardType = .default
+        textField.autocapitalizationType = .words
         textField.returnKeyType = .done
         textField.clearButtonMode = .whileEditing
         textField.contentVerticalAlignment = .center
@@ -256,6 +257,33 @@ class OrderViewController: UIViewController, UIViewControllerTransitioningDelega
         
         self.present(paymentVC, animated: true)
     }
+    
+    private func showAlertForCustomProduct() {
+        let ac = UIAlertController(title: "Adicione pessoa jogadora", message: nil, preferredStyle: .alert)
+        ac.addTextField()
+        ac.addTextField()
+        
+        ac.textFields?.first?.placeholder = "Nome..."
+        ac.textFields?.last?.placeholder = "Valor..."
+        
+        ac.textFields?.first?.keyboardType = .default
+        ac.textFields?.last?.keyboardType = .numberPad
+        
+        let submitAction = UIAlertAction(title: "Confirmar", style: .default) { _ in
+            let name = ac.textFields?.first?.text ?? ""
+            let price = Double(ac.textFields?.last?.text ?? "0")
+            let productId = (self.viewModel.order?.products?.count ?? 0) + 1000
+            let product = Product(name: name, price: price ?? 0.0, productType: 9, productId: productId)
+            
+            self.viewModel.addProductToOrder(product: product)
+        }
+        
+        ac.addAction(submitAction)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            self.present(ac, animated: true)
+        }
+    }
 }
 
 // MARK: - Extensions
@@ -320,13 +348,21 @@ extension OrderViewController: ProductCellProtocol {
     }
     
     func addSelectedProduct(product: Product) {
-        viewModel.addProductToOrder(product: product)
+        if product.productType == ProductType.football.rawValue {
+            showAlertForCustomProduct()
+        } else {
+            viewModel.addProductToOrder(product: product)
+        }
     }
 }
 
 extension OrderViewController: ProductProtocol {
     func selectedProduct(product: Product) {
-        viewModel.addProductToOrder(product: product)
+        if product.productType == ProductType.football.rawValue {
+            showAlertForCustomProduct()
+        } else {
+            viewModel.addProductToOrder(product: product)
+        }
     }
 }
 
@@ -335,6 +371,7 @@ extension OrderViewController: UITextFieldDelegate {
         if textField.text != "" {
             textField.resignFirstResponder()
             textField.isEnabled = false
+            textField.text = textField.text?.capitalized
             viewModel.createOrder(name: textField.text ?? "")
         } else {
             textField.resignFirstResponder()
@@ -346,6 +383,7 @@ extension OrderViewController: UITextFieldDelegate {
         if textField.text != "" {
             textField.resignFirstResponder()
             textField.isEnabled = false
+            textField.text = textField.text?.capitalized
             viewModel.createOrder(name: textField.text ?? "")
         }
     }
