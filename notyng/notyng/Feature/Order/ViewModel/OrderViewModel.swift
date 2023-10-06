@@ -68,7 +68,7 @@ public final class OrderViewModel {
     }
     
     public func getCountProducts(product: Product) -> Int {
-        let filteredProducts = products.filter({$0.productId == product.productId})
+        let filteredProducts = products.filter({($0.productId == product.productId && ($0.productId != 49))})
         return filteredProducts.count
     }
     
@@ -95,7 +95,9 @@ public final class OrderViewModel {
     private func removeDuplicatedProduct() -> [Product] {
         var uniqueProduct: [Product] = []
         for product in products {
-            if !uniqueProduct.contains(where: {$0.productId == product.productId }) {
+            if !uniqueProduct.contains(where: {
+                ($0.productId == product.productId)
+                && ($0.productId != 49) }) {
                 uniqueProduct.append(product)
             }
         }

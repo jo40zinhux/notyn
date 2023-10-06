@@ -267,20 +267,20 @@ class OrderViewController: UIViewController, UIViewControllerTransitioningDelega
         ac.textFields?.last?.placeholder = "Valor..."
         
         ac.textFields?.first?.keyboardType = .default
-        ac.textFields?.last?.keyboardType = .numberPad
+        ac.textFields?.last?.keyboardType = .decimalPad
         
         let submitAction = UIAlertAction(title: "Confirmar", style: .default) { _ in
             let name = ac.textFields?.first?.text ?? ""
-            let price = Double(ac.textFields?.last?.text ?? "0")
-            let productId = (self.viewModel.order?.products?.count ?? 0) + 1000
-            let product = Product(name: name, price: price ?? 0.0, productType: 9, productId: productId)
+            let priceValue = ac.textFields?.last?.text?.replacingOccurrences(of: ",", with: ".")
+            let price = Double(priceValue ?? "0.0")
+            let product = Product(name: name, price: price ?? 0.0, productType: 9, productId: 49)
             
             self.viewModel.addProductToOrder(product: product)
         }
         
         ac.addAction(submitAction)
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
             self.present(ac, animated: true)
         }
     }

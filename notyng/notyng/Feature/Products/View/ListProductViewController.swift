@@ -12,13 +12,55 @@ class ListProductViewController: UIViewController {
     // MARK: - Properties
     var delegate: ProductProtocol? = nil
     
+    private var searchContentView: UIView = {
+        let view = UIView()
+        
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = Colors.backgroundPrimaryColor
+        view.layer.cornerRadius = ValueConst.x14
+        
+        return view
+    }()
+    
+    private lazy var filterProductsTextField: UITextField = {
+        let textField = UITextField()
+        
+        textField.delegate = self
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.attributedPlaceholder = NSAttributedString(
+            string: "Produto...",
+            attributes: [NSAttributedString.Key.foregroundColor: UIColor.darkGray]
+        )
+        textField.font = Fonts.textRegular12
+        textField.textColor = Colors.backgroundTertiaryColor
+        textField.autocorrectionType = .no
+        textField.keyboardType = .namePhonePad
+        textField.returnKeyType = .done
+        textField.contentVerticalAlignment = .center
+        textField.backgroundColor = .clear
+        textField.textAlignment = .left
+        textField.clearButtonMode = .whileEditing
+        
+        return textField
+    }()
+    
+    private var searchImage: UIImageView = {
+        let imageView = UIImageView()
+        
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.image = Icons.search
+        imageView.contentMode = .scaleAspectFit
+        imageView.tintColor = Colors.primaryColor
+        
+        return imageView
+    }()
+    
     private lazy var listProductTableView: UITableView = {
         let tableView = UITableView()
         
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.backgroundColor = Colors.backgroundSecondaryColor
         tableView.backgroundColor = .clear
         tableView.estimatedRowHeight = UITableView.automaticDimension
         tableView.separatorStyle = .none
@@ -50,14 +92,31 @@ class ListProductViewController: UIViewController {
     
     // MARK: - Laytou Setups
     private func setupLayout() {
+        view.addSubview(searchContentView)
         view.addSubview(listProductTableView)
+        searchContentView.addSubview(filterProductsTextField)
+        searchContentView.addSubview(searchImage)
         
         listProductTableView.register(ListProductTableViewCell.self, forCellReuseIdentifier: ListProductTableViewCell.identifier)
     }
     
     private func setupLayoutConstraints() {
         NSLayoutConstraint.activate([
-            listProductTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            searchContentView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: ValueConst.x16),
+            searchContentView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: ValueConst.x16),
+            searchContentView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -ValueConst.x16),
+            searchContentView.heightAnchor.constraint(equalToConstant: ValueConst.x48),
+
+            searchImage.centerYAnchor.constraint(equalTo: searchContentView.centerYAnchor),
+            searchImage.leadingAnchor.constraint(equalTo: searchContentView.leadingAnchor, constant: ValueConst.x16),
+            searchImage.heightAnchor.constraint(equalToConstant: ValueConst.x28),
+            searchImage.widthAnchor.constraint(equalToConstant: ValueConst.x28),
+
+            filterProductsTextField.centerYAnchor.constraint(equalTo: searchImage.centerYAnchor),
+            filterProductsTextField.leadingAnchor.constraint(equalTo: searchImage.trailingAnchor, constant: ValueConst.x8),
+            filterProductsTextField.trailingAnchor.constraint(equalTo: searchContentView.trailingAnchor),
+            
+            listProductTableView.topAnchor.constraint(equalTo: searchContentView.bottomAnchor, constant: ValueConst.x8),
             listProductTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             listProductTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             listProductTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
@@ -94,5 +153,21 @@ extension ListProductViewController: ListProductProtocol {
     
     func fetchFailData() {
         listProductTableView.reloadData()
+    }
+}
+
+extension ListProductViewController: UITextFieldDelegate {
+    func textFieldDidChangeSelection(_ textField: UITextField) {
+        if textField.text != "" {
+            let value = textField.text ?? ""
+            viewModel.filterProductByName(name: value)
+        } else {
+            viewModel.clearFilter()
+        }
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
 }

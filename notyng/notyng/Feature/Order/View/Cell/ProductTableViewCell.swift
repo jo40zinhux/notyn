@@ -182,8 +182,18 @@ class ProductTableViewCell: UITableViewCell {
         mProduct = product
         productItem.typeIcon = ProductType(rawValue: product.productType) ?? .soda
         productItem.price = product.price.toPriceString()
-        productItem.name = product.name ?? ""
+        productItem.name = product.name 
         self.productCount = productCount
+        
+        if product.productId == 49 {
+            counterBackground.isHidden = true
+            minusButton.isEnabled = false
+            plusButton.isEnabled = false
+        } else {
+            counterBackground.isHidden = false
+            minusButton.isEnabled = true
+            plusButton.isEnabled = true
+        }
     }
     
     // MARK: - Action Setups

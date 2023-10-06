@@ -66,7 +66,7 @@ class ListProductTableViewCell: UITableViewCell {
     }
     
     public func setupCell(product: Product) {
-        productItem.name = product.name ?? ""
+        productItem.name = product.name
         productItem.price = product.price.toPriceString()
         productItem.typeIcon = ProductType(rawValue: product.productType) ?? .beer
     }

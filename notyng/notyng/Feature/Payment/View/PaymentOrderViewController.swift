@@ -21,6 +21,17 @@ class PaymentOrderViewController: UIViewController {
         return button
     }()
     
+    private var shareButton: UIButton = {
+        let button = UIButton()
+        
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.isUserInteractionEnabled = true
+        button.tintColor = .white
+        button.setBackgroundImage(Icons.dollarSign, for: .normal)
+        
+        return button
+    }()
+    
     private var finishButton: UIButton = {
         let button = UIButton()
         
@@ -190,6 +201,7 @@ class PaymentOrderViewController: UIViewController {
         view.backgroundColor = Colors.primaryColor
         view.addSubview(closeButton)
         view.addSubview(finishButton)
+        view.addSubview(shareButton)
         view.addSubview(viewContent)
         viewContent.addSubview(titleLabel)
         viewContent.addSubview(viewTopDivisor)
@@ -213,6 +225,11 @@ class PaymentOrderViewController: UIViewController {
             closeButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: ValueConst.x16),
             closeButton.heightAnchor.constraint(equalToConstant: ValueConst.x24),
             closeButton.widthAnchor.constraint(equalToConstant: ValueConst.x24),
+            
+            shareButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: ValueConst.x8),
+            shareButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -ValueConst.x16),
+            shareButton.heightAnchor.constraint(equalToConstant: ValueConst.x24),
+            shareButton.widthAnchor.constraint(equalToConstant: ValueConst.x24),
             
             finishButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: ValueConst.x8),
             finishButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -ValueConst.x16),
@@ -285,6 +302,7 @@ class PaymentOrderViewController: UIViewController {
     private func setupActions() {
         closeButton.addTarget(self, action: #selector(dismissView), for: .touchUpInside)
         finishButton.addTarget(self, action: #selector(finishOrder), for: .touchUpInside)
+        shareButton.addTarget(self, action: #selector(shareOrder), for: .touchUpInside)
     }
     
     @objc
@@ -296,6 +314,36 @@ class PaymentOrderViewController: UIViewController {
     private func finishOrder() {
         print("go to select method payment type")
         viewModel.saveOrder()
+    }
+    
+    @objc
+    private func shareOrder() {
+        titleLabel.text = viewModel.order?.name
+        titleLabel.font = Fonts.titleBold16
+        paymentTitlelabel.isHidden = true
+        paymentMethodTextField.isHidden = true
+        closeButton.isHidden = true
+        shareButton.isHidden = true
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
+            let bounds = UIScreen.main.bounds
+            UIGraphicsBeginImageContextWithOptions(bounds.size, true, 0.0)
+            self.view.drawHierarchy(in: bounds, afterScreenUpdates: false)
+            let img = UIGraphicsGetImageFromCurrentImageContext()
+            UIGraphicsEndImageContext()
+            let activityViewController = UIActivityViewController(activityItems: [img ?? UIImage()], applicationActivities: nil)
+            self.present(activityViewController, animated: true, completion: nil)
+            
+            activityViewController.completionWithItemsHandler = { activity, success, items, error in
+                self.titleLabel.text = "notyn"
+                self.titleLabel.font = Fonts.titleBold64
+                self.paymentTitlelabel.isHidden = false
+                self.paymentMethodTextField.isHidden = false
+                self.closeButton.isHidden = false
+                self.shareButton.isHidden = false
+            }
+        }
+        
     }
 }
 
@@ -342,6 +390,8 @@ extension PaymentOrderViewController : UIPickerViewDataSource, UIPickerViewDeleg
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        shareButton.isHidden = true
+        shareButton.isEnabled = false
         finishButton.isHidden = false
         finishButton.isEnabled = true
         return MethodIcon.getNameFromMethodType(method: viewModel.methods[row])
@@ -353,5 +403,8 @@ extension PaymentOrderViewController : UIPickerViewDataSource, UIPickerViewDeleg
         
         finishButton.isHidden = false
         finishButton.isEnabled = true
+        
+        shareButton.isHidden = true
+        shareButton.isEnabled = false
     }
 }

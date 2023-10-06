@@ -19,4 +19,5 @@ struct Icons {
     static let card = UIImage(named: "ic_credit_card")
     static let cash = UIImage(named: "ic_cash")
     static let dollarSign = UIImage(named: "ic_dollar_sign")
+    static let search = UIImage(named: "ic_search")
 }
