@@ -185,15 +185,9 @@ class ProductTableViewCell: UITableViewCell {
         productItem.name = product.name 
         self.productCount = productCount
         
-        if product.productId == 49 {
-            counterBackground.isHidden = true
-            minusButton.isEnabled = false
-            plusButton.isEnabled = false
-        } else {
-            counterBackground.isHidden = false
-            minusButton.isEnabled = true
-            plusButton.isEnabled = true
-        }
+        counterBackground.isHidden = false
+        minusButton.isEnabled = true
+        plusButton.isEnabled = true
     }
     
     // MARK: - Action Setups
