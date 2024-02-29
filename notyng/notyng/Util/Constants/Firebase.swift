@@ -8,6 +8,6 @@
 import Foundation
 
 struct Firebase {
-    static let orders = "api/orders"
+    static let orders = "api/new_orders"
     static let products = "api/products"
 }
